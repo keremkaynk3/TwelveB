@@ -1,5 +1,6 @@
 import sqlite3
 import wx
+
 class NotionApp(wx.Frame):
     def __init__(self, user_id, *args, **kwargs):
         super(NotionApp, self).__init__(*args, **kwargs)
@@ -7,42 +8,7 @@ class NotionApp(wx.Frame):
         self.init_ui()
         self.conn = sqlite3.connect("registered.db")
         self.conn.execute("PRAGMA foreign_keys = ON")
-        self.create_tables()
         self.user_id = user_id  # Oturum açmış kullanıcı ID'si burada saklanıyor
-
-    def create_tables(self):
-        cursor = self.conn.cursor()
-        cursor.execute('''
-            CREATE TABLE IF NOT EXISTS users (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                username TEXT NOT NULL,
-                password TEXT NOT NULL
-            )
-        ''')
-        cursor.execute('''
-            CREATE TABLE IF NOT EXISTS notes (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                user_id INTEGER,
-                note TEXT,
-                checked INTEGER DEFAULT 0,
-                FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE
-            )
-        ''')
-        cursor.execute('''
-            CREATE TABLE IF NOT EXISTS notes2 (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                user_id INTEGER,
-                note2 TEXT,
-                FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE
-            )
-        ''')
-        cursor.execute('''
-            CREATE TABLE IF NOT EXISTS settings (
-                id INTEGER PRIMARY KEY,
-                dark_mode INTEGER
-            )
-        ''')
-        self.conn.commit()
 
     def init_ui(self):
         self.SetTitle("Welcome to TwelveB")

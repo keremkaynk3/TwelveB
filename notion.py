@@ -176,6 +176,7 @@ class NotionApp(wx.Frame):
             note2 = self.todo_listbox.GetString(selection)
             self.delete_note2(note2)
             self.show_notes2()
+
     def delete_note(self, note):
         cursor = self.conn.cursor()
         cursor.execute("DELETE FROM notes WHERE user_id=? AND note=?", (self.user_id, note))
